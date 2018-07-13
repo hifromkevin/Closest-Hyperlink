@@ -57,10 +57,10 @@ var setRandomCoords = (num) => {
 // Prints the current coordinates of my mouse (current function call is commented out)
 var coordsOfMouse = () => {
   document.addEventListener('mousemove', (e) => {
-    var cursorX = e.clientX;
-    var cursorY = e.clientY;    
+    var leftPositionOfCursor = e.clientX;
+    var topPositionOfCursor = e.clientY;    
     
-    console.log(cursorX, cursorY);
+    console.log(leftPositionOfCursor, topPositionOfCursor);
   });
 };
 
@@ -74,17 +74,17 @@ var findClosest = (num) => {
 
     var closestToClickValue = null;
     var linkNumberOfClosest = null;
-    var cursorX = e.clientX; //left
-    var cursorY = e.clientY; //top
-    var topDiff;
-    var leftDiff;
+    var leftPositionOfCursor = e.clientX; 
+    var topPositionOfCursor = e.clientY; 
+    var cursorAndLinkTopDifference;
+    var cursorAndLinkLeftDifference;
 
     for (var i = 0; i < num; i++) {
-      topDiff = Math.abs(cursorY - Number(document.querySelector(`.link-${i}`).style.top.slice(0, -2)));
-      leftDiff = Math.abs(cursorX - Number(document.querySelector(`.link-${i}`).style.left.slice(0, -2)));
-      totalDiff = topDiff + leftDiff;
-      if(closestToClickValue === null || closestToClickValue > totalDiff) {
-        closestToClickValue = totalDiff;
+      cursorAndLinkTopDifference = Math.abs(topPositionOfCursor - Number(document.querySelector(`.link-${i}`).style.top.slice(0, -2)));
+      cursorAndLinkLeftDifference = Math.abs(leftPositionOfCursor - Number(document.querySelector(`.link-${i}`).style.left.slice(0, -2)));
+      totalDistanceBetweenCursorAndLink = cursorAndLinkTopDifference + cursorAndLinkLeftDifference;
+      if(closestToClickValue === null || closestToClickValue > totalDistanceBetweenCursorAndLink) {
+        closestToClickValue = totalDistanceBetweenCursorAndLink;
         linkNumberOfClosest = i;
       }
     }
