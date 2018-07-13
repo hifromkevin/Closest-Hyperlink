@@ -26,11 +26,9 @@ var listLength = listOfStates.length;
 for (var i = 0; i < num; i++) {
   var randomState = Math.floor(Math.random() * listOfStates.length);
 
-  //set links to position top: 0px, left: 0px
-  //This recalibrates the positioning of each element, rather than getting position from original position
-  //(original position is based on where it would appear as pure HTML)
+  //displays each link and sets position
   listOfAnchors += `<a href="#" class="link-${i}" 
-  style="top: 0px; left: 0px;"
+  style="top: ${Math.floor(Math.random() * window.innerHeight)}px; left: ${Math.floor(Math.random() * window.innerWidth)}px;"
   >${listOfStates[randomState]}</a>`;
 
   //Do not repeat state, unless the number of links is greater than the number of states
@@ -40,18 +38,6 @@ for (var i = 0; i < num; i++) {
 }
 
 return listOfAnchors;
-};
-
-
-//This randomizes link positions, after starting from (0, 0)
-var setRandomCoords = (num) => {
-  for (var i = 0; i < num; i++) {
-    var randomNumberTop = Math.floor(Math.random() * window.innerHeight);
-    var randomNumberLeft = Math.floor(Math.random() * window.innerWidth);
-
-    document.querySelector(`.link-${i}`).style = `top: ${0 + randomNumberTop}px; left: ${0 + randomNumberLeft}px;`;
-    arrayOfCoords.push([i, randomNumberTop, randomNumberLeft]);
-  };
 };
 
 // Prints the current coordinates of my mouse (current function call is commented out)
@@ -97,7 +83,6 @@ var findClosest = (num) => {
 
 
 document.getElementById('app').innerHTML = createAnchorTags(numberOfLinks);
-setRandomCoords(numberOfLinks);
 //coordsOfMouse();
 findClosest(numberOfLinks);
 
