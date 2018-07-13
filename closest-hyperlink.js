@@ -4,6 +4,8 @@ var numberOfLinks = 30;
 //Create an array containing [elementNumber, top, left] for possible sorting
 var arrayOfCoords = [];
 
+var recentClosest = null;
+
 //Create a list of words, give them a position, and add to HTML 
 var getAnchorTags = (num) => {
   var listOfAnchors = '';
@@ -62,11 +64,48 @@ var coordsOfMouse = () => {
   });
 };
 
+var findClosest = (num) => {
+
+  //reset style of previously selected
+  if (recentClosest !== null) {
+    document.querySelector(`.link-${recentClosest}`).style = 'background-color: #000';
+  }
+
+  var closestToClickValue = null;
+  var linkNumberOfClosest = null;
+  var cursorX;
+  var cursorY;
+  var topDiff;
+  var leftDiff;
+
+
+  document.addEventListener('click', function(e){ //use mousemove for hover rather than click
+    cursorX = e.clientX; //left
+    cursorY = e.clientY; //top
+
+    console.log(cursorX, cursorY);
+
+    for (var i = 0; i < num; i++) {
+      topDiff = Math.abs(cursorY - Number(document.querySelector(`.link-${i}`).style.top.slice(0, -2)));
+      leftDiff = Math.abs(cursorX - Number(document.querySelector(`.link-${i}`).style.left.slice(0, -2)));
+      totalDiff = topDiff + leftDiff;
+      if(closestToClickValue === null || closestToClickValue > totalDiff) {
+        closestToClickValue = totalDiff;
+        linkNumberOfClosest = i;
+      }
+    }
+    console.log(document.querySelector(`.link-${linkNumberOfClosest}`));
+    document.querySelector(`.link-${linkNumberOfClosest}`).style.background = '#f90';
+
+    recentClosest = linkNumberOfClosest;
+  });
+}
+
 
 
 document.getElementById('app').innerHTML = getAnchorTags(numberOfLinks);
 setRandomCoords(numberOfLinks);
-printMousePos();
+coordsOfMouse();
 findClosest(numberOfLinks);
 
 
