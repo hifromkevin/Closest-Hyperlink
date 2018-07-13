@@ -69,7 +69,7 @@ var findClosest = (num) => {
   document.addEventListener('mousemove', function(e){ 
     //reset style of previously selected
     if (recentClosest !== null) {
-      document.querySelector(`.link-${recentClosest}`).style.background = '#fff';
+      document.querySelector(`.link-${recentClosest}`).style.background = 'none';
     }
 
     var closestToClickValue = null;
