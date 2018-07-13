@@ -9,56 +9,14 @@ var getAnchorTags = (num) => {
   var listOfAnchors = '';
 
   var listOfStates = [
-  'Alabama',
-  'Alaska',
-  'Arizona',
-  'Arkansas',
-  'California',
-  'Colorado',
-  'Connecticut',
-  'Delaware',
-  'Florida',
-  'Georgia',
-  'Hawaii',
-  'Idaho',
-  'Illinois',
-  'Indiana',
-  'Iowa',
-  'Kansas',
-  'Kentucky',
-  'Louisiana',
-  'Maine',
-  'Maryland',
-  'Massachusetts',
-  'Michigan',
-  'Minnesota',
-  'Mississippi',
-  'Missouri',
-  'Montana',
-  'Nebraska',
-  'Nevada',
-  'NewHampshire',
-  'NewJersey',
-  'NewMexico',
-  'NewYork',
-  'NorthCarolina',
-  'NorthDakota',
-  'Ohio',
-  'Oklahoma',
-  'Oregon',
-  'Pennsylvania',
-  'RhodeIsland',
-  'SouthCarolina',
-  'SouthDakota',
-  'Tennessee',
-  'Texas',
-  'Utah',
-  'Vermont',
-  'Virginia',
-  'Washington',
-  'West Virginia',
-  'Wisconsin',
-  'Wyoming' 
+  'Alabama',  'Alaska',  'Arizona',  'Arkansas',  'California',  'Colorado',  'Connecticut',  
+  'Delaware',  'Florida',  'Georgia',  'Hawaii',  'Idaho',  'Illinois',  'Indiana',  'Iowa',  
+  'Kansas',  'Kentucky',  'Louisiana',  'Maine',  'Maryland',  'Massachusetts',  'Michigan',  
+  'Minnesota',  'Mississippi',  'Missouri',  'Montana',  'Nebraska',  'Nevada',  'NewHampshire',  
+  'NewJersey',  'NewMexico',  'NewYork',  'NorthCarolina',  'NorthDakota',  'Ohio',  'Oklahoma',  
+  'Oregon',  'Pennsylvania',  'RhodeIsland',  'SouthCarolina',  'SouthDakota',  'Tennessee',  
+  'Texas',  'Utah',  'Vermont',  'Virginia',  'Washington',  'West Virginia',  
+  'Wisconsin',  'Wyoming' 
 ];
 
 var listLength = listOfStates.length;
@@ -82,7 +40,6 @@ for (var i = 0; i < num; i++) {
 return listOfAnchors;
 };
 
-document.getElementById('app').innerHTML = getAnchorTags(numberOfLinks);
 
 //This randomizes link positions, after starting from (0, 0)
 var setRandomCoords = (num) => {
@@ -92,10 +49,8 @@ var setRandomCoords = (num) => {
 
     document.querySelector(`.link-${i}`).style = `top: ${0 + randomNumberTop}px; left: ${0 + randomNumberLeft}px;`;
     arrayOfCoords.push([i, randomNumberTop, randomNumberLeft]);
-  }
-}
-setRandomCoords(numberOfLinks);
-console.log('aoc', arrayOfCoords);
+  };
+};
 
 /* Print the  current coordinates of my mouse */
 var coordsOfMouse = () => {
@@ -106,6 +61,13 @@ var coordsOfMouse = () => {
     console.log(cursorX, cursorY);
   });
 };
-coordsOfMouse();
+
+
+
+document.getElementById('app').innerHTML = getAnchorTags(numberOfLinks);
+setRandomCoords(numberOfLinks);
+printMousePos();
+findClosest(numberOfLinks);
+
 
 
