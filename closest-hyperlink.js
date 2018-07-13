@@ -7,7 +7,7 @@ var arrayOfCoords = [];
 var recentClosest = null;
 
 //Create a list of words, give them a position, and add to HTML 
-var getAnchorTags = (num) => {
+var createAnchorTags = (num) => {
   var listOfAnchors = '';
 
   var listOfStates = [
@@ -54,7 +54,7 @@ var setRandomCoords = (num) => {
   };
 };
 
-/* Print the  current coordinates of my mouse */
+// Prints the current coordinates of my mouse (current function call is commented out)
 var coordsOfMouse = () => {
   document.addEventListener('mousemove', (e) => {
     var cursorX = e.clientX;
@@ -64,6 +64,7 @@ var coordsOfMouse = () => {
   });
 };
 
+//function that looks for the closest element to the mouse, and highlights the background
 var findClosest = (num) => {
   document.addEventListener('mousemove', function(e){ 
     //reset style of previously selected
@@ -78,9 +79,6 @@ var findClosest = (num) => {
     var topDiff;
     var leftDiff;
 
-
-    console.log(cursorX, cursorY);
-
     for (var i = 0; i < num; i++) {
       topDiff = Math.abs(cursorY - Number(document.querySelector(`.link-${i}`).style.top.slice(0, -2)));
       leftDiff = Math.abs(cursorX - Number(document.querySelector(`.link-${i}`).style.left.slice(0, -2)));
@@ -90,7 +88,6 @@ var findClosest = (num) => {
         linkNumberOfClosest = i;
       }
     }
-    console.log(document.querySelector(`.link-${linkNumberOfClosest}`));
     document.querySelector(`.link-${linkNumberOfClosest}`).style.background = '#f90';
 
     recentClosest = linkNumberOfClosest;
@@ -99,9 +96,9 @@ var findClosest = (num) => {
 
 
 
-document.getElementById('app').innerHTML = getAnchorTags(numberOfLinks);
+document.getElementById('app').innerHTML = createAnchorTags(numberOfLinks);
 setRandomCoords(numberOfLinks);
-coordsOfMouse();
+//coordsOfMouse();
 findClosest(numberOfLinks);
 
 
