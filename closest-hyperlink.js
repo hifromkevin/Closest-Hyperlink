@@ -65,23 +65,19 @@ var coordsOfMouse = () => {
 };
 
 var findClosest = (num) => {
+  document.addEventListener('mousemove', function(e){ 
+    //reset style of previously selected
+    if (recentClosest !== null) {
+      document.querySelector(`.link-${recentClosest}`).style.background = '#fff';
+    }
 
-  //reset style of previously selected
-  if (recentClosest !== null) {
-    document.querySelector(`.link-${recentClosest}`).style = 'background-color: #000';
-  }
+    var closestToClickValue = null;
+    var linkNumberOfClosest = null;
+    var cursorX = e.clientX; //left
+    var cursorY = e.clientY; //top
+    var topDiff;
+    var leftDiff;
 
-  var closestToClickValue = null;
-  var linkNumberOfClosest = null;
-  var cursorX;
-  var cursorY;
-  var topDiff;
-  var leftDiff;
-
-
-  document.addEventListener('click', function(e){ //use mousemove for hover rather than click
-    cursorX = e.clientX; //left
-    cursorY = e.clientY; //top
 
     console.log(cursorX, cursorY);
 
