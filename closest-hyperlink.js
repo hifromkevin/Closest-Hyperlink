@@ -135,7 +135,7 @@ var memoize = (fn) => {
 }
 
 document.getElementById('app').innerHTML = createAnchorTags(numberOfLinks);
-coordsOfMouse();
+//coordsOfMouse();
 
 var findClosest = memoize(findClosest(numberOfLinks));
 findClosest();
