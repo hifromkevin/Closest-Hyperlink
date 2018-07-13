@@ -26,9 +26,10 @@ var listLength = listOfStates.length;
 for (var i = 0; i < num; i++) {
   var randomState = Math.floor(Math.random() * listOfStates.length);
 
-  //displays each link and sets position
+  //adds links top HTML. sets position of links
   listOfAnchors += `<a href="#" class="link-${i}" 
-  style="top: ${Math.floor(Math.random() * window.innerHeight)}px; left: ${Math.floor(Math.random() * window.innerWidth)}px;"
+  style="top: ${Math.floor(Math.random() * window.innerHeight)}px; 
+  left: ${Math.floor(Math.random() * window.innerWidth)}px;"
   >${listOfStates[randomState]}</a>`;
 
   //Do not repeat state, unless the number of links is greater than the number of states
@@ -50,6 +51,15 @@ var coordsOfMouse = () => {
   });
 };
 
+//Sorting coordinates
+var sortingHat = (a, b) => {
+  if (a === b) {
+    return 0;
+  } else {
+    return (a < b) ? -1 : 1;
+  }
+}
+
 //function that looks for the closest element to the mouse, and highlights the background
 var findClosest = (num) => {
   document.addEventListener('mousemove', function(e){ 
@@ -58,19 +68,50 @@ var findClosest = (num) => {
       document.querySelector(`.link-${recentClosest}`).style.background = 'none';
     }
 
+    var leftPositionOfCursor = e.clientX; 
+    var topPositionOfCursor = e.clientY;
+
     var closestToClickValue = null;
     var linkNumberOfClosest = null;
-    var leftPositionOfCursor = e.clientX; 
-    var topPositionOfCursor = e.clientY; 
+
+    var positionOfLink; 
     var cursorAndLinkTopDifference;
     var cursorAndLinkLeftDifference;
 
+    var differences;
+
+    var topLeftCoordOfLink;
+    var topRightCoordOfLink;
+    var bottomLeftCoordOfLink;
+    var bottomRightCoordOfLink;
+
     for (var i = 0; i < num; i++) {
-      cursorAndLinkTopDifference = Math.abs(topPositionOfCursor - Number(document.querySelector(`.link-${i}`).style.top.slice(0, -2)));
-      cursorAndLinkLeftDifference = Math.abs(leftPositionOfCursor - Number(document.querySelector(`.link-${i}`).style.left.slice(0, -2)));
-      totalDistanceBetweenCursorAndLink = cursorAndLinkTopDifference + cursorAndLinkLeftDifference;
-      if(closestToClickValue === null || closestToClickValue > totalDistanceBetweenCursorAndLink) {
-        closestToClickValue = totalDistanceBetweenCursorAndLink;
+      differences = [];
+
+      topLeftCoordOfLink = [
+        document.querySelector(`.link-${i}`).getBoundingClientRect().x, 
+        document.querySelector(`.link-${i}`).getBoundingClientRect().y
+      ];
+      topRightCoordOfLink = [
+        (document.querySelector(`.link-${i}`).getBoundingClientRect().x + document.querySelector(`.link-${i}`).getBoundingClientRect().width), 
+        document.querySelector(`.link-${i}`).getBoundingClientRect().y
+      ];
+      bottomLeftCoordOfLink = [
+        document.querySelector(`.link-${i}`).getBoundingClientRect().x, 
+        (document.querySelector(`.link-${i}`).getBoundingClientRect().y + document.querySelector(`.link-${i}`).getBoundingClientRect().height)
+      ];
+      bottomRightCoordOfLink = [
+        (document.querySelector(`.link-${i}`).getBoundingClientRect().x + document.querySelector(`.link-${i}`).getBoundingClientRect().width), 
+        (document.querySelector(`.link-${i}`).getBoundingClientRect().y + document.querySelector(`.link-${i}`).getBoundingClientRect().height)
+      ];
+
+      differences.push(Math.abs(leftPositionOfCursor - topLeftCoordOfLink[0]) + Math.abs(topPositionOfCursor - topLeftCoordOfLink[1]));
+      differences.push(Math.abs(leftPositionOfCursor - topRightCoordOfLink[0]) + Math.abs(topPositionOfCursor - topRightCoordOfLink[1]));
+      differences.push(Math.abs(leftPositionOfCursor - bottomLeftCoordOfLink[0]) + Math.abs(topPositionOfCursor - bottomLeftCoordOfLink[1]));
+      differences.push(Math.abs(leftPositionOfCursor - bottomRightCoordOfLink[0]) + Math.abs(topPositionOfCursor - topRightCoordOfLink[1]));
+
+      if (closestToClickValue === null || closestToClickValue > differences.sort(sortingHat)[0]) {
+        closestToClickValue = differences.sort(sortingHat)[0];
         linkNumberOfClosest = i;
       }
     }
@@ -80,11 +121,21 @@ var findClosest = (num) => {
   });
 }
 
+var memoize = (fn) => {
+  var cache = {};
 
+  return function(...args) {
+    if(cache[args]) { return cache[args] };
+  }
+
+  const result = fn.apply(this, args);
+  cache[args] = result;
+
+  return result;
+}
 
 document.getElementById('app').innerHTML = createAnchorTags(numberOfLinks);
-//coordsOfMouse();
-findClosest(numberOfLinks);
+coordsOfMouse();
 
-
-
+var findClosest = memoize(findClosest(numberOfLinks));
+findClosest();
