@@ -85,6 +85,16 @@ var findClosest = (num) => {
     var bottomLeftCoordOfLink;
     var bottomRightCoordOfLink;
 
+    document.onmouseover = function(e) {
+      if (e.target.className) {
+        closestToClickValue = 0;
+        var linkNumberSplit = e.target.className.split('-');
+        linkNumberOfClosest = Numvber(linkNumberSplit[linkNumberSplit.length - 1]);
+      }
+      document.querySelector(`.link-${linkNumberOfClosest}`).style.background = '#f90';
+      return;
+    }
+    
     for (var i = 0; i < num; i++) {
       differences = [];
 
